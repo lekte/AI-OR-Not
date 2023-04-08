@@ -1,6 +1,45 @@
+
+
+// Get the submit button element
+const submitBtn = document.getElementById('submit-btn');
+
+// Set a cookie with an expiration date of one day
+function setCookie() {
+  const now = new Date();
+  const expires = new Date(now.getTime() + 86400000); // 86400000 ms = 1 day
+  document.cookie = 'played=true;expires=' + expires.toUTCString();
+}
+
+// Check if the user has played today
+function checkCookie() {
+  const cookies = document.cookie.split('; ');
+  for (let i = 0; i < cookies.length; i++) {
+    const cookie = cookies[i].split('=');
+    if (cookie[0] === 'played' && cookie[1] === 'true') {
+      return true;
+    }
+  }
+  return false;
+}
+
+// Disable the game if the user has already played today
+if (checkCookie()) {
+  submitBtn.disabled = true;
+  document.getElementById('result').textContent = 'You can only play once a day';
+}
+
+// Add a click event listener to the submit button
+submitBtn.addEventListener('click', function() {
+  // Set the cookie when the user submits the form
+  setCookie();
+
+  // Perform the game logic here
+  // ...
+
+});
 // Get all the checkboxes and submit button
 const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-const submitBtn = document.getElementById('submit-btn');
+//const submitBtn = document.getElementById('submit-btn');
 
 // Set the correct answers (indices of AI generated images)
 const correctAnswers = [1, 3, 5, 7, 9];
@@ -113,34 +152,6 @@ submitBtn.addEventListener('click', function() {
   });
 */
 
-  // Disable all checkboxes
-  checkboxes.forEach(function(checkbox) {
-    checkbox.disabled = true;
-  });
-
-  // Disable the submit button
-  submitBtn.disabled = true;
-
-  // Store the current date in localStorage
-  const currentDate = new Date();
-  localStorage.setItem('lastDate', currentDate.toDateString());
-//});
-
-// Check if the user has already played today
-const lastDate = localStorage.getItem('lastDate');
-if (lastDate && lastDate === new Date().toDateString()) {
-  // Disable all checkboxes
-  const checkboxes = document.querySelectorAll('input[type=checkbox]');
-  checkboxes.forEach(function(checkbox) {
-    checkbox.disabled = true;
-  });
-
-  // Disable the submit button
-  submitBtn.disabled = true;
-
-  // Show a message
-  result.innerHTML = `Sorry, you can only play once per day. Please come back tomorrow!`;
-}
 
 
   
